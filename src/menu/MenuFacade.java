@@ -66,4 +66,7 @@ public class MenuFacade {
         System.exit(0);
     }
 
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
 }

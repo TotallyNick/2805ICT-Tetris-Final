@@ -13,6 +13,8 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import sounds.BackgroundMusic;
+import sounds.SoundEffects;
 
 enum Shape {
     I, J, L, O, S, T, Z // Enum representing different Tetromino shapes
@@ -173,6 +175,7 @@ public class TetrisGame extends JPanel implements ActionListener {
     private int score = 0;
     private int linesRemoved = 0;
     private int difficulty = 1;
+    private static SoundEffects soundEffect;
     public List<HighScore> highScores = new ArrayList<>();
     // Constructor to initialize the game
     public TetrisGame() {
@@ -203,13 +206,27 @@ public class TetrisGame extends JPanel implements ActionListener {
 
     private void updateScore(int linesCleared){
         linesRemoved += linesCleared;
-        switch(linesCleared){
-            case 1 -> score += 100;
-            case 2 -> score += 300;
-            case 3 -> score += 600;
-            case 4 -> score += 1000; // tetris
-            default -> {
-            } // add nothing
+        switch(linesCleared) {
+            case 1 :
+                score += 100;
+                soundEffect = new SoundEffects();
+                soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
+                soundEffect.setVolume(0.45f);  // Set volume to 50%
+            case 2 :
+                score += 300;
+                soundEffect = new SoundEffects();
+                soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
+                soundEffect.setVolume(0.45f);  // Set volume to 50%
+            case 3 :
+                score += 600;
+                soundEffect = new SoundEffects();
+                soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
+                soundEffect.setVolume(0.45f);  // Set volume to 50%
+            case 4 :
+                score += 1000; // tetris
+                soundEffect = new SoundEffects();
+                soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
+                soundEffect.setVolume(0.45f);  // Set volume to 50%
         }
         adjustGameSpeed();
     }
@@ -218,8 +235,13 @@ public class TetrisGame extends JPanel implements ActionListener {
         // Increase difficulty every multiple of 10 lines removed
         if (linesRemoved / 10 > difficulty - 1) {
             difficulty = linesRemoved / 10 + 1;  // Update difficulty
-            int newDelay = Math.max(200 - (difficulty * 20), 100);  // Adjust the delay based on difficulty
+            int newDelay = Math.max(200 - (difficulty * 2), 100);  // Adjust the delay based on difficulty
             timer.setDelay(newDelay);
+            // Play Sound Effect
+            soundEffect = new SoundEffects();
+            soundEffect.playEffect("assets/level-up.wav");  // Provide the correct file path
+            soundEffect.setVolume(0.80f);  // Set volume to 50%
+
         }
     }
 
@@ -276,6 +298,11 @@ public class TetrisGame extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currentTetromino.rotate();
+                //Play sound effect
+                soundEffect = new SoundEffects();
+                soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+                soundEffect.setVolume(0.45f);  // Set volume to 50%
+
                 if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
                     // Undo rotation if placement fails
                     currentTetromino.rotate();
@@ -402,6 +429,11 @@ public class TetrisGame extends JPanel implements ActionListener {
     // Update and save the high scores after game over
     private void gameOver() {
         timer.stop();
+        // Play sound Effect
+        soundEffect = new SoundEffects();
+        soundEffect.playEffect("assets/game-finish.wav");  // Provide the correct file path
+        soundEffect.setVolume(0.45f);  // Set volume to 50%
+
         String playerName = JOptionPane.showInputDialog(this, "Game Over! Enter your name:");
         if (playerName != null && !playerName.isEmpty()) {
             updateHighScores(playerName, score);  // Only update with player name and score

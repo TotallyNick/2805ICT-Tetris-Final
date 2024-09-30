@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4079cc89-96c1-4e7c-acdd-98cd3cecb507" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/sounds/SoundEffects.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/music.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/music.wav" beforeDir="false" afterPath="$PROJECT_DIR$/assets/music.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/highscores.json" beforeDir="false" afterPath="$PROJECT_DIR$/highscores.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/TetrisGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/TetrisGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/BackgroundMusic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/BackgroundMusic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/BackgroundMusic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sounds/BackgroundMusic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/ConfigMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/ConfigMenuPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/TetrisGamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TetrisGamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

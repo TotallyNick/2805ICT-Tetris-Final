@@ -16,157 +16,6 @@ import config.GameConfig;
 import sounds.BackgroundMusic;
 import sounds.SoundEffects;
 
-enum Shape {
-    I, J, L, O, S, T, Z // Enum representing different Tetromino shapes
-}
-
-class Tetromino {
-    private int[][] coordinates;  // Holds the shape's coordinates in a 2D array
-    private final Color color;    // The color of the Tetromino
-
-    // Predefined 2D arrays representing the block structures of the Tetromino shapes
-    private static final int[][][] SHAPES = {
-            {{1, 1, 1, 1}},  // Shape I (line)
-            {{1, 1, 1}, {0, 0, 1}},  // Shape J (L)
-            {{1, 1, 1}, {1, 0, 0}},  // Shape L
-            {{1, 1}, {1, 1}},  // Shape O (square)
-            {{0, 1, 1}, {1, 1, 0}},  // Shape S (Z)
-            {{0, 1, 0}, {1, 1, 1}},  // Shape T
-            {{1, 1, 0}, {0, 1, 1}}   // Shape Z (reverse Z)
-    };
-
-    // Constructor that initializes a random Tetromino shape with a random color
-    public Tetromino() {
-        Random rand = new Random();
-        Shape shape = Shape.values()[rand.nextInt(Shape.values().length)];
-        this.coordinates = SHAPES[shape.ordinal()];
-        this.color = assignColor(shape);
-    }
-
-    // assign color spefic to the shape
-    private Color assignColor(Shape shape){
-        return switch (shape) {
-            case I -> new Color(0, 0, 255);  // Blue (I)
-            case J -> new Color(0, 0, 139);  // Dark Blue (J)
-            case L -> new Color(255, 165, 0);  // Orange (L)
-            case O -> new Color(255, 255, 0);  // Yellow (O)
-            case S -> new Color(0, 255, 0);  // Green (S)
-            case T -> new Color(128, 0, 128);  // Purple (T)
-            case Z -> new Color(255, 0, 0);  // Red (Z)
-        };
-    }
-
-    // Getter for the Tetromino's shape coordinates
-    public int[][] getCoordinates() {
-        return coordinates;
-    }
-
-    // Getter for the Tetromino's color
-    public Color getColor() {
-        return color;
-    }
-
-    // Rotates the Tetromino 90 degrees clockwise
-    public void rotate() {
-        int[][] newCoordinates = new int[coordinates[0].length][coordinates.length];
-        for (int i = 0; i < coordinates.length; i++) {
-            for (int j = 0; j < coordinates[i].length; j++) {
-                newCoordinates[j][coordinates.length - 1 - i] = coordinates[i][j];
-            }
-        }
-        coordinates = newCoordinates; // Update the Tetromino's shape with the rotated coordinates
-    }
-}
-
-class Board {
-    public int width = 10;  // The width of the board (in blocks)
-    public int height = 20; // The height of the board (in blocks)
-    private final Color[][] grid;  // 2D grid to store the state (color) of each block on the board
-
-    // Initializes an empty grid of the board
-    public Board() {
-        grid = new Color[height][width];
-    }
-
-    // Checks if the Tetromino can be placed at the specified (x, y) position
-    public boolean canPlaceTetrimino(Tetromino tetromino, int x, int y) {
-        for (int i = 0; i < tetromino.getCoordinates().length; i++) {
-            for (int j = 0; j < tetromino.getCoordinates()[i].length; j++) {
-                if (tetromino.getCoordinates()[i][j] == 1) {  // Only check cells with value 1
-                    // Check if it's out of bounds or colliding with an existing block
-                    if (x + j < 0 || x + j >= width || y + i >= height || (y + i >= 0 && grid[y + i][x + j] != null)) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    // Places the Tetromino on the board at the specified (x, y) position
-    public void placeTetrimino(Tetromino tetromino, int x, int y) {
-        for (int i = 0; i < tetromino.getCoordinates().length; i++) {
-            for (int j = 0; j < tetromino.getCoordinates()[i].length; j++) {
-                if (tetromino.getCoordinates()[i][j] == 1) {  // Only place blocks with value 1
-                    grid[y + i][x + j] = tetromino.getColor();  // Set the color on the grid
-                }
-            }
-        }
-    }
-
-    // Clears all completed lines from the board
-    public int clearLines() {
-        int linesCleared = 0;
-        for (int i = 0; i < height; i++) {
-            if (isLineFull(i)) {  // Check if a line is complete
-                clearLine(i);  // Clear the full line
-                linesCleared++;
-                i--;  // Recheck the current line after clearing
-            }
-        }
-        return linesCleared; // Return number of lines clared
-    }
-
-    // Checks if a row (y) is fully filled
-    private boolean isLineFull(int y) {
-        for (int j = 0; j < width; j++) {
-            if (grid[y][j] == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Clears a specific line (y) and shifts the above lines down
-    private void clearLine(int y) {
-        for (int i = y; i > 0; i--) {
-            System.arraycopy(grid[i - 1], 0, grid[i], 0, width);  // Shift rows down
-        }
-        clearLineTop();  // Clear the topmost row after shifting
-    }
-
-    // Clears the top row by setting all its cells to null
-    private void clearLineTop() {
-        Arrays.fill(grid[0], null);
-    }
-
-    // Getter for the board's grid
-    public Color[][] getGrid() {
-        return grid;
-    }
-
-    // Getter for the board's width
-    public int getWidth() {
-        return width;
-    }
-
-    // Getter for the board's height
-    public int getHeight() {
-        return height;
-    }
-
-}
-
 public class TetrisGame extends JPanel implements ActionListener {
     private Board board;
     private Tetromino currentTetromino;
@@ -543,8 +392,6 @@ public class TetrisGame extends JPanel implements ActionListener {
         g.setFont(new Font("Arial", Font.BOLD, 15));
         g.drawString("M = Toggle Music, S = Toggle Sound, B = Restart (After Game Over)" , 350, 180);
 
-
-
     }
     // Update and save the high scores after game over
     private void gameOver() {
@@ -603,5 +450,9 @@ public class TetrisGame extends JPanel implements ActionListener {
             e.printStackTrace();
         }
     }
+    // Getter for the tests
+
+
+
 
 }

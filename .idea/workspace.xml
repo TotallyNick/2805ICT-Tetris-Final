@@ -5,12 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4079cc89-96c1-4e7c-acdd-98cd3cecb507" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/game/Board.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/Shape.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/Tetromino.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tests/TetrisGameTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/TetrisGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/TetrisGame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

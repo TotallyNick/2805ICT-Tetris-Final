@@ -1,20 +1,19 @@
 package game;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import config.GameConfig;
-import sounds.BackgroundMusic;
 import sounds.SoundEffects;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TetrisGame extends JPanel implements ActionListener {
     private Board board;
@@ -66,22 +65,22 @@ public class TetrisGame extends JPanel implements ActionListener {
                 score += 100;
                 soundEffect = new SoundEffects();
                 soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
-                soundEffect.setVolume(0.45f);  // Set volume to 50%
+                SoundEffects.setVolume(0.45f);  // Set volume to 50%
             case 2 :
                 score += 300;
                 soundEffect = new SoundEffects();
                 soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
-                soundEffect.setVolume(0.45f);  // Set volume to 50%
+                SoundEffects.setVolume(0.45f);  // Set volume to 50%
             case 3 :
                 score += 600;
                 soundEffect = new SoundEffects();
                 soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
-                soundEffect.setVolume(0.45f);  // Set volume to 50%
+                SoundEffects.setVolume(0.45f);  // Set volume to 50%
             case 4 :
                 score += 1000; // tetris
                 soundEffect = new SoundEffects();
                 soundEffect.playEffect("assets/erase-line.wav");  // Provide the correct file path
-                soundEffect.setVolume(0.45f);  // Set volume to 50%
+                SoundEffects.setVolume(0.45f);  // Set volume to 50%
         }
         adjustGameSpeed();
     }
@@ -95,7 +94,7 @@ public class TetrisGame extends JPanel implements ActionListener {
             // Play Sound Effect
             soundEffect = new SoundEffects();
             soundEffect.playEffect("assets/level-up.wav");  // Provide the correct file path
-            soundEffect.setVolume(0.80f);  // Set volume to 50%
+            SoundEffects.setVolume(0.80f);  // Set volume to 50%
 
         }
     }

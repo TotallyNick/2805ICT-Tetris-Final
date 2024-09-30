@@ -1,8 +1,8 @@
 package game;
 
 public class HighScore {
-    private String playerName;
-    private int score;
+    private final String playerName;
+    private final int score;
 
     // Constructor
     public HighScore(String playerName, int score) {
@@ -10,7 +10,7 @@ public class HighScore {
         this.score = score;
     }
 
-    // Getters and Setters
+    // Getters =
     public String getPlayerName() {
         return playerName;
     }

@@ -198,8 +198,8 @@ public class TetrisGame extends JPanel implements ActionListener {
         requestFocusInWindow();
 
         loadHighScores(); // load existing high scores
-    }
 
+    }
 
     private void updateScore(int linesCleared){
         linesRemoved += linesCleared;

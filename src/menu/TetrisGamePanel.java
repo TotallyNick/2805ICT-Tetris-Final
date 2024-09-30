@@ -2,6 +2,9 @@ package menu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import game.TetrisGame;
 
 public class TetrisGamePanel extends JPanel {
@@ -25,5 +28,22 @@ public class TetrisGamePanel extends JPanel {
         // Ensure the TetrisGame panel can capture key inputs
         tetrisGame.setFocusable(true);
         tetrisGame.requestFocusInWindow();
+
+        // Back Button to return to Main Menu
+        JButton backButton = new JButton("Back to Main Menu");
+        backButton.setPreferredSize(new Dimension(150, 50)); // Set size of the back button
+        backButton.setAlignmentX(CENTER_ALIGNMENT); // Center horizontally
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.showMainMenu(); // Return to the main menu
+            }
+        });
+
+        // Create a panel for the button and position it at the bottom
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Center the button horizontally
+        buttonPanel.add(backButton);
+        add(buttonPanel, BorderLayout.SOUTH); // Add button panel to the bottom of the main panel
     }
 }

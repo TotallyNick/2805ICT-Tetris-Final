@@ -49,7 +49,7 @@ public class HighScorePanel extends JPanel {
     }
 
     // Method to load high scores from a JSON file and create a JTable
-    private JScrollPane createScoreTable() {
+    static JScrollPane createScoreTable() {
         String[] columnNames = {"Player Name", "Score"}; // Define table columns
         Object[][] data = loadHighScores(); // Load the high scores as a 2D array
 
@@ -66,8 +66,9 @@ public class HighScorePanel extends JPanel {
         return new JScrollPane(scoreTable);
     }
 
+
     // Method to load high scores from a JSON file using Gson and convert to 2D array
-    private Object[][] loadHighScores() {
+    private static Object[][] loadHighScores() {
         try {
             // Create a Gson instance
             Gson gson = new Gson();

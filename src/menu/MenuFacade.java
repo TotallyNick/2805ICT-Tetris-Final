@@ -56,6 +56,7 @@ public class MenuFacade {
     }
 
     public void showHighScore() {
+        menu.HighScorePanel.createScoreTable();
         CardLayout c1 = (CardLayout) mainFrame.getContentPane().getLayout();
         c1.show(mainFrame.getContentPane(), "Highscore Panel");
     }

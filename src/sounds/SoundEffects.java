@@ -7,7 +7,9 @@ import java.io.IOException;
 public class SoundEffects {
 
     private static Clip clip;
-    private static FloatControl volumeControl;
+    private FloatControl volumeControl;
+    private static float volume = 0.25f; // Default volume
+    private static int pausePosition = 0; // To save the pause position
 
 
     public void playEffect(String filePath) {
@@ -36,25 +38,33 @@ public class SoundEffects {
 
     // Set the volume, where value is between 0 (mute) and 1 (full volume)
     public static void setVolume(float value) {
-        if (volumeControl != null) {
+        if (clip != null && clip.isControlSupported(javax.sound.sampled.FloatControl.Type.MASTER_GAIN)) {
+            javax.sound.sampled.FloatControl volumeControl = (javax.sound.sampled.FloatControl)
+                    clip.getControl(javax.sound.sampled.FloatControl.Type.MASTER_GAIN);
             float min = volumeControl.getMinimum();
             float max = volumeControl.getMaximum();
             float newVolume = min + (max - min) * value;  // Scale between min and max
             volumeControl.setValue(newVolume);
+            volume = value; // Save the volume setting
         } else {
-            System.out.println("Volume control is not supported or not initialized.");
+            System.out.println("Volume control is not supported or clip is not initialized.");
         }
     }
 
-
-    // This needs to be fixed
     // Pause the music by stopping the clip and saving its position
     public static void pauseSound() {
-        SoundEffects.setVolume(0.0f);
+        if (clip != null && clip.isRunning()) {
+            pausePosition = clip.getFramePosition();  // Save the current position
+            clip.stop();  // Pause the sound
+        }
     }
 
     // Resume the music by restarting the clip from the saved position
     public static void resumeSound() {
-        SoundEffects.setVolume(0.25f);
+        if (clip != null && !clip.isRunning()) {
+            clip.setFramePosition(pausePosition);  // Resume from the saved position
+            clip.start();  // Start playing the sound again
+            setVolume(volume);  // Restore the volume setting
+        }
     }
 }

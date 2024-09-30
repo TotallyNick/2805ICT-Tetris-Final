@@ -6,10 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ConfigMenuPanel extends JPanel {
-    private MenuFacade menuFacade;
 
     public ConfigMenuPanel(MenuFacade menuFacade) {
-        this.menuFacade = menuFacade;
 
         // Set Layout for vertical alignment
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

@@ -1,5 +1,6 @@
 import menu.MenuFacade;
 import menu.SplashScreen;
+import game.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,5 +10,6 @@ public class Main {
         // Create and display the menu using the facade pattern
         MenuFacade menu = new MenuFacade();
         menu.showMainMenu();
+
     }
 }

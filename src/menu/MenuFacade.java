@@ -8,6 +8,7 @@ public class MenuFacade {
     private MainMenuPanel mainMenuPanel;
     private ConfigMenuPanel configMenuPanel;
     private HighScorePanel highScorePanel;
+    private TetrisGamePanel tetrisGamePanel;
 
     public MenuFacade() {
         // Initialize JFrame
@@ -20,9 +21,11 @@ public class MenuFacade {
         mainMenuPanel = new MainMenuPanel(this);
         configMenuPanel = new ConfigMenuPanel(this);
         highScorePanel = new HighScorePanel(this);
+        tetrisGamePanel =  new TetrisGamePanel(this);
 
         // Add Panels to the Frame
         mainFrame.add(mainMenuPanel, "Main Menu Panel");
+        mainFrame.add(tetrisGamePanel, "Tetris Game Panel");
         mainFrame.add(configMenuPanel, "Config Menu Panel");
         mainFrame.add(highScorePanel, "Highscore Panel");
 
@@ -31,6 +34,12 @@ public class MenuFacade {
 
         // Display main menu
         showMainMenu();
+    }
+    // Start the Game Instance
+    public void showGame(){
+        CardLayout c1 = (CardLayout) mainFrame.getContentPane().getLayout();
+        c1.show(mainFrame.getContentPane(), "Tetris Game Panel");
+        mainFrame.setVisible(true);
     }
 
     // Display Main Menu Method
@@ -55,4 +64,5 @@ public class MenuFacade {
     public void quitGame() {
         System.exit(0);
     }
+
 }

@@ -1,5 +1,7 @@
 package menu;
 
+// My Classes
+// Libraries
 import javax.swing.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ public class MainMenuPanel extends JPanel {
 
     public MainMenuPanel(MenuFacade menuFacade) {
         this.menuFacade = menuFacade;
+
 
         // Set Layout for the Main Menu Panel
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,8 +35,7 @@ public class MainMenuPanel extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Starting the Game...");
-                menuFacade.quitGame(); // Placeholder for now
+                menuFacade.showGame(); // Calls method to show GamePanel
             }
         });
 
@@ -53,7 +55,7 @@ public class MainMenuPanel extends JPanel {
         highscoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                menuFacade.showHighScore();
+                menuFacade.showHighScore();// Calls method to show HighScorePanel
             }
         });
 

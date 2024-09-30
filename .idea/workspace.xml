@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4079cc89-96c1-4e7c-acdd-98cd3cecb507" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/menu/SplashScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/menu/TetrisGamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tetris.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/TetrisGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/TetrisGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/ConfigMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/ConfigMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MainMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/MenuFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetrimino/Tetrimino.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetrimino/TetriminoFactory.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +45,20 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Nicholas Webster/Desktop/2805ICT/chatgiptty&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="Tetris" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

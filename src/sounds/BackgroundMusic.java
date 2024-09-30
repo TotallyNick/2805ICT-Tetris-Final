@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class BackgroundMusic {
 
-    private Clip clip;
+    private static Clip clip;
     private FloatControl volumeControl;
-    private long clipTimePosition;
+    private static long clipTimePosition;
 
     public void playMusic(String filePath) {
         try {
@@ -36,7 +36,7 @@ public class BackgroundMusic {
     }
 
     // Pause the music by stopping the clip and saving its position
-    public void pauseMusic() {
+    public static void pauseMusic() {
         if (clip != null && clip.isRunning()) {
             clipTimePosition = clip.getMicrosecondPosition(); // Save current position
             clip.stop(); // Pause the clip
@@ -44,7 +44,7 @@ public class BackgroundMusic {
     }
 
     // Resume the music by restarting the clip from the saved position
-    public void resumeMusic() {
+    public static void resumeMusic() {
         if (clip != null) {
             clip.setMicrosecondPosition(clipTimePosition); // Set clip position to where it was paused
             clip.start(); // Resume playing

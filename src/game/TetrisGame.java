@@ -1,6 +1,5 @@
 package game;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -172,6 +171,8 @@ public class TetrisGame extends JPanel implements ActionListener {
     private int currentX, currentY;
     private final Timer timer;
     private boolean isPaused = false;
+    private boolean isMusicPaused = false;
+    private boolean isSoundPaused = false;
     private int score = 0;
     private int linesRemoved = 0;
     private int difficulty = 1;
@@ -264,6 +265,10 @@ public class TetrisGame extends JPanel implements ActionListener {
                 if (board.canPlaceTetrimino(currentTetromino, currentX - 1, currentY)) {
                     currentX--;
                     repaint();
+                    //Play sound effect
+                    soundEffect = new SoundEffects();
+                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+                    soundEffect.setVolume(0.25f);  // Set volume to 50%
                 }
             }
         });
@@ -276,6 +281,10 @@ public class TetrisGame extends JPanel implements ActionListener {
                 if (board.canPlaceTetrimino(currentTetromino, currentX + 1, currentY)) {
                     currentX++;
                     repaint();
+                    //Play sound effect
+                    soundEffect = new SoundEffects();
+                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+                    soundEffect.setVolume(0.25f);  // Set volume to 50%
                 }
             }
         });
@@ -288,6 +297,10 @@ public class TetrisGame extends JPanel implements ActionListener {
                 if (board.canPlaceTetrimino(currentTetromino, currentX, currentY + 1)) {
                     currentY++;
                     repaint();
+                    //Play sound effect
+                    soundEffect = new SoundEffects();
+                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+                    soundEffect.setVolume(0.25f);  // Set volume to 50%
                 }
             }
         });
@@ -301,7 +314,7 @@ public class TetrisGame extends JPanel implements ActionListener {
                 //Play sound effect
                 soundEffect = new SoundEffects();
                 soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
-                soundEffect.setVolume(0.45f);  // Set volume to 50%
+                soundEffect.setVolume(0.25f);  // Set volume to 50%
 
                 if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
                     // Undo rotation if placement fails
@@ -319,6 +332,22 @@ public class TetrisGame extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 togglePause();
+            }
+        });
+        // M key -> Pause/Unpause the game
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), "music");
+        actionMap.put("music", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleMusic();
+            }
+        });
+        // S key -> Pause/Unpause the game
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sound");
+        actionMap.put("sound", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleSound();
             }
         });
     }
@@ -345,6 +374,26 @@ public class TetrisGame extends JPanel implements ActionListener {
         } else {
             timer.start();
         }
+    }
+    // Toggle Music
+    private void toggleMusic() {
+        isMusicPaused = !isMusicPaused;
+        if (isMusicPaused) {
+            sounds.BackgroundMusic.pauseMusic();
+        } else {
+            sounds.BackgroundMusic.resumeMusic();
+        }
+    }
+    // Toggle Sound Effects
+    private void toggleSound() {
+        isSoundPaused = !isSoundPaused;
+        if (isSoundPaused) {
+            sounds.SoundEffects.pauseSound();
+        } else {
+            sounds.SoundEffects.resumeSound();
+        }
+
+        // STILL WORKING ON IT
     }
 
     // Called every timer tick to move the Tetromino down if the game is not paused

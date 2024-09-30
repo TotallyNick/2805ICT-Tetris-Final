@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class SoundEffects {
 
-    private Clip clip;
-    private FloatControl volumeControl;
-    private long clipTimePosition;
+    private static Clip clip;
+    private static FloatControl volumeControl;
+
 
     public void playEffect(String filePath) {
         try {
@@ -35,7 +35,7 @@ public class SoundEffects {
 
 
     // Set the volume, where value is between 0 (mute) and 1 (full volume)
-    public void setVolume(float value) {
+    public static void setVolume(float value) {
         if (volumeControl != null) {
             float min = volumeControl.getMinimum();
             float max = volumeControl.getMaximum();
@@ -44,5 +44,17 @@ public class SoundEffects {
         } else {
             System.out.println("Volume control is not supported or not initialized.");
         }
+    }
+
+
+    // This needs to be fixed
+    // Pause the music by stopping the clip and saving its position
+    public static void pauseSound() {
+        SoundEffects.setVolume(0.0f);
+    }
+
+    // Resume the music by restarting the clip from the saved position
+    public static void resumeSound() {
+        SoundEffects.setVolume(0.25f);
     }
 }

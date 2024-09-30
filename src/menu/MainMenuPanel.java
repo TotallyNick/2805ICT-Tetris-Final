@@ -89,4 +89,7 @@ public class MainMenuPanel extends JPanel {
         // Add a small vertical gap after the author label
         add(Box.createVerticalStrut(10));
     }
+
+
 }
+

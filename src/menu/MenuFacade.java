@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MenuFacade {
-    private JFrame mainFrame;
+    public JFrame mainFrame;
     private MainMenuPanel mainMenuPanel;
     private ConfigMenuPanel configMenuPanel;
     private HighScorePanel highScorePanel;

@@ -8,6 +8,7 @@ public class BackgroundMusic {
 
     private Clip clip;
     private FloatControl volumeControl;
+    private long clipTimePosition;
 
     public void playMusic(String filePath) {
         try {
@@ -16,10 +17,6 @@ public class BackgroundMusic {
                 AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicPath);
                 clip = AudioSystem.getClip();
                 clip.open(audioStream);
-
-                // Access the volume control
-                volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
                 clip.loop(Clip.LOOP_CONTINUOUSLY);  // Loop the music
                 clip.start();
             } else {
@@ -29,6 +26,24 @@ public class BackgroundMusic {
             e.printStackTrace();
         }
     }
+
+    // Pause the music by stopping the clip and saving its position
+    public void pauseMusic() {
+        if (clip != null && clip.isRunning()) {
+            clipTimePosition = clip.getMicrosecondPosition(); // Save current position
+            clip.stop(); // Pause the clip
+        }
+    }
+
+    // Resume the music by restarting the clip from the saved position
+    public void resumeMusic() {
+        if (clip != null) {
+            clip.setMicrosecondPosition(clipTimePosition); // Set clip position to where it was paused
+            clip.start(); // Resume playing
+        }
+    }
+
+
     // Set the volume, where value is between 0 (mute) and 1 (full volume)
     public void setVolume(float value) {
         if (volumeControl != null) {
@@ -39,16 +54,10 @@ public class BackgroundMusic {
         }
     }
 
-    public void stopMusic() {
-        if (clip != null && clip.isRunning()) {
-            clip.stop();
-        }
-    }
-
     public static void main(String[] args) {
 
         BackgroundMusic backgroundMusic = new BackgroundMusic();
-        backgroundMusic.playMusic("music.wav");  // Provide the correct file path
+        backgroundMusic.playMusic("assets/music.wav");  // Provide the correct file path
         backgroundMusic.setVolume(0.5f);  // Set volume to 50%
         while(true){}
     }

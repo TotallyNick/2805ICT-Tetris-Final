@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4079cc89-96c1-4e7c-acdd-98cd3cecb507" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/gson_2_10_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game/HighScore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/gson_2_10_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/TetrisGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/TetrisGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/TetrisGamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/TetrisGamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gson-2.10.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/HighScorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/HighScorePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,9 +37,9 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/Nicholas Webster/Desktop/Tetris Game 2.0/New Source Project/Tetris/2805ICT-Tetris-Final/gson-2.10.1.jar",
+    "last_opened_file_path": "C:/Users/Nicholas Webster/Desktop/Tetris Game 2.0/New Source Project/Tetris/2805ICT-Tetris-Final/dependencies/gson-2.10.1.jar",
     "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
+    "project.structure.proportion": "0.15625",
     "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "configurable.group.tools"

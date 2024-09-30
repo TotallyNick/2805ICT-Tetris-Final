@@ -56,7 +56,7 @@ public class MenuFacade {
     }
 
     public void showHighScore() {
-        menu.HighScorePanel.createScoreTable();
+        highScorePanel.refreshScores();  // Refresh scores before showing the panel
         CardLayout c1 = (CardLayout) mainFrame.getContentPane().getLayout();
         c1.show(mainFrame.getContentPane(), "Highscore Panel");
     }

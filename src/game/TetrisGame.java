@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import config.GameConfig;
 import sounds.BackgroundMusic;
 import sounds.SoundEffects;
 
@@ -78,8 +79,8 @@ class Tetromino {
 }
 
 class Board {
-    private final int width = 10;  // The width of the board (in blocks)
-    private final int height = 20; // The height of the board (in blocks)
+    public int width = 10;  // The width of the board (in blocks)
+    public int height = 20; // The height of the board (in blocks)
     private final Color[][] grid;  // 2D grid to store the state (color) of each block on the board
 
     // Initializes an empty grid of the board
@@ -163,6 +164,7 @@ class Board {
     public int getHeight() {
         return height;
     }
+
 }
 
 public class TetrisGame extends JPanel implements ActionListener {
@@ -182,13 +184,13 @@ public class TetrisGame extends JPanel implements ActionListener {
     private boolean isGameOver = false; // Flag to indicate gamestate
     private boolean musicOn = true;
     private boolean soundOn = true;
+    private GameConfig config;
     // Constructor to initialize the game
     public TetrisGame() {
         // Set layout and initialize board and game settings
         board = new Board();
         setLayout(null); // No layout manager needed for the game area
 
-        // Set the preferred size for the game area (this is important for display)
         setPreferredSize(new Dimension(500, 750));
 
         // Initialize the game by spawning a Tetromino and starting the timer
@@ -254,7 +256,15 @@ public class TetrisGame extends JPanel implements ActionListener {
         super.addNotify();
         requestFocusInWindow();  // Ensure the component gains focus when shown
     }
-
+    // Apply loaded configurations to the game settings
+    private void applyConfigurations() {
+        if (config != null) {
+            // Adjust game settings based on the loaded config
+            difficulty = config.getGameLevel();  // Set game level
+            musicOn = config.isMusicOn();  // Set music toggle state
+            soundOn = config.isSoundEffectOn();  // Set sound effect toggle state
+        }
+    }
     // Bind key inputs using InputMap and ActionMap
     // Bind key inputs using InputMap and ActionMap
     private void bindKeyInputs() {

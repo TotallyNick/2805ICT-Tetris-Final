@@ -93,4 +93,41 @@ public class HighScorePanel extends JPanel {
             return new Object[][]{{"Error", "Unable to load scores"}};
         }
     }
+
+    public void refreshScores() {
+        // Remove the old score table
+        this.removeAll();
+
+        // Recreate the layout and reload the high scores
+        setLayout(new BorderLayout());
+
+        // Title Label for High Scores
+        JLabel highScoreLabel = new JLabel("High Scores");
+        highScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        highScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(highScoreLabel, BorderLayout.NORTH); // Add title at the top
+
+        // Load high scores from JSON and add table
+        add(createScoreTable(), BorderLayout.CENTER);
+
+        // Back Button to return to Main Menu
+        JButton backButton = new JButton("Back to Main Menu");
+        backButton.setPreferredSize(new Dimension(150, 50));
+
+        // Panel to center the back button
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(backButton);
+
+        // Add the button panel to the bottom of the main panel
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Back Button action
+        backButton.addActionListener(e -> menuFacade.showMainMenu());
+
+        // Revalidate and repaint to apply changes
+        revalidate();
+        repaint();
+    }
+
 }

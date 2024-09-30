@@ -19,7 +19,7 @@ public class TetrisGamePanel extends JPanel {
         add(titleLabel, BorderLayout.NORTH); // Add title to the top of the panel
 
         // Initialize and add the Tetris game to the center of the panel
-        tetrisGame = new TetrisGame(frame);
+        tetrisGame = new TetrisGame();
         add(tetrisGame, BorderLayout.CENTER);
 
         // Ensure the TetrisGame panel can capture key inputs

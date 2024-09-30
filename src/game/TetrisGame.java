@@ -1,12 +1,18 @@
 package game;
 
-import menu.MenuFacade;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 enum Shape {
     I, J, L, O, S, T, Z // Enum representing different Tetromino shapes
@@ -18,13 +24,13 @@ class Tetromino {
 
     // Predefined 2D arrays representing the block structures of the Tetromino shapes
     private static final int[][][] SHAPES = {
-            {{1, 1, 1, 1}},  // Shape I
-            {{1, 1, 1}, {0, 0, 1}},  // Shape J
+            {{1, 1, 1, 1}},  // Shape I (line)
+            {{1, 1, 1}, {0, 0, 1}},  // Shape J (L)
             {{1, 1, 1}, {1, 0, 0}},  // Shape L
-            {{1, 1}, {1, 1}},  // Shape O
-            {{0, 1, 1}, {1, 1, 0}},  // Shape S
+            {{1, 1}, {1, 1}},  // Shape O (square)
+            {{0, 1, 1}, {1, 1, 0}},  // Shape S (Z)
             {{0, 1, 0}, {1, 1, 1}},  // Shape T
-            {{1, 1, 0}, {0, 1, 1}}   // Shape Z
+            {{1, 1, 0}, {0, 1, 1}}   // Shape Z (reverse Z)
     };
 
     // Constructor that initializes a random Tetromino shape with a random color
@@ -32,7 +38,20 @@ class Tetromino {
         Random rand = new Random();
         Shape shape = Shape.values()[rand.nextInt(Shape.values().length)];
         this.coordinates = SHAPES[shape.ordinal()];
-        this.color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
+        this.color = assignColor(shape);
+    }
+
+    // assign color spefic to the shape
+    private Color assignColor(Shape shape){
+        return switch (shape) {
+            case I -> new Color(0, 0, 255);  // Blue (I)
+            case J -> new Color(0, 0, 139);  // Dark Blue (J)
+            case L -> new Color(255, 165, 0);  // Orange (L)
+            case O -> new Color(255, 255, 0);  // Yellow (O)
+            case S -> new Color(0, 255, 0);  // Green (S)
+            case T -> new Color(128, 0, 128);  // Purple (T)
+            case Z -> new Color(255, 0, 0);  // Red (Z)
+        };
     }
 
     // Getter for the Tetromino's shape coordinates
@@ -152,9 +171,11 @@ public class TetrisGame extends JPanel implements ActionListener {
     private final Timer timer;
     private boolean isPaused = false;
     private int score = 0;
-
+    private int linesRemoved = 0;
+    private int difficulty = 1;
+    public List<HighScore> highScores = new ArrayList<>();
     // Constructor to initialize the game
-    public TetrisGame(MenuFacade frame) {
+    public TetrisGame() {
         // Set layout and initialize board and game settings
         board = new Board();
         setLayout(null); // No layout manager needed for the game area
@@ -175,24 +196,30 @@ public class TetrisGame extends JPanel implements ActionListener {
 
         // Request focus when the component is visible
         requestFocusInWindow();
+
+        loadHighScores(); // load existing high scores
     }
 
+
     private void updateScore(int linesCleared){
+        linesRemoved += linesCleared;
         switch(linesCleared){
             case 1 -> score += 100;
             case 2 -> score += 300;
-            case 3 -> score += 500;
-            case 4 -> score += 800; // tetris
-            default -> score += 0; // add nothing
+            case 3 -> score += 600;
+            case 4 -> score += 1000; // tetris
+            default -> {
+            } // add nothing
         }
         adjustGameSpeed();
     }
 
-    private void adjustGameSpeed(){
-        if (score > 1000 && timer.getDelay() > 200) {
-            timer.setDelay(200);  // Speed up the game
-        } else if (score > 3000 && timer.getDelay() > 100) {
-            timer.setDelay(100);  // Further increase the game speed
+    private void adjustGameSpeed() {
+        // Increase difficulty every multiple of 10 lines removed
+        if (linesRemoved / 10 > difficulty - 1) {
+            difficulty = linesRemoved / 10 + 1;  // Update difficulty
+            int newDelay = Math.max(200 - (difficulty * 20), 100);  // Adjust the delay based on difficulty
+            timer.setDelay(newDelay);
         }
     }
 
@@ -278,7 +305,7 @@ public class TetrisGame extends JPanel implements ActionListener {
         // End game if the Tetromino can't be placed at the initial position
         if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
             timer.stop();
-            JOptionPane.showMessageDialog(this, "Game Over");
+            gameOver();
         }
     }
 
@@ -316,7 +343,7 @@ public class TetrisGame extends JPanel implements ActionListener {
         drawBoard(g);
         drawTetrimino(g);
         drawGrid(g);
-        drawScore(g); // draw Score
+        drawStatus(g); // draw Score
     }
 
     // Draw the board's existing blocks
@@ -354,9 +381,62 @@ public class TetrisGame extends JPanel implements ActionListener {
         }
     }
 
-    private void drawScore(Graphics g) {
-        g.setColor(Color.BLACK);  // Set score text color
-        g.setFont(new Font("Arial", Font.BOLD, 20));  // Set font
-        g.drawString("Score: " + score, 350, 20);  // Draw the score at the top left
+    private void drawStatus(Graphics g) {
+        // Type of User
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("User: Human",350, 20);
+        // Score
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Level: " + difficulty, 350, 40);
+        // Score
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Score: " + score, 350, 60);
+        // Lines Cleared
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Lines Cleared " + linesRemoved, 350, 80);
+    }
+    // Update and save the high scores after game over
+    private void gameOver() {
+        timer.stop();
+        String playerName = JOptionPane.showInputDialog(this, "Game Over! Enter your name:");
+        if (playerName != null && !playerName.isEmpty()) {
+            updateHighScores(playerName, score);  // Only update with player name and score
+        }
+    }
+
+    // Method to update the high score list
+    private void updateHighScores(String playerName, int score) {
+        highScores.add(new HighScore(playerName, score));  // Append new score
+        highScores.sort((a, b) -> Integer.compare(b.getScore(), a.getScore())); // Sort scores in descending order
+
+        if (highScores.size() > 10) {
+            highScores = highScores.subList(0, 10); // Keep only the top 10 scores
+        }
+
+        saveHighScores(); // Save the updated high scores to a file
+    }
+
+
+    // Load high scores from JSON file
+    private void loadHighScores() {
+        try (Reader reader = new FileReader("highscores.json")) {
+            Type highScoreListType = new TypeToken<ArrayList<HighScore>>() {}.getType();
+            highScores = new Gson().fromJson(reader, highScoreListType);
+        } catch (IOException e) {
+            highScores = new ArrayList<>(); // If the file doesn't exist, create an empty list
+        }
+    }
+
+    // Save high scores to JSON file
+    private void saveHighScores() {
+        try (Writer writer = new FileWriter("highscores.json")) {
+            new Gson().toJson(highScores, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

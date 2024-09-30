@@ -166,7 +166,7 @@ class Board {
 }
 
 public class TetrisGame extends JPanel implements ActionListener {
-    private final Board board;
+    private Board board;
     private Tetromino currentTetromino;
     private int currentX, currentY;
     private final Timer timer;
@@ -178,6 +178,10 @@ public class TetrisGame extends JPanel implements ActionListener {
     private int difficulty = 1;
     private static SoundEffects soundEffect;
     public List<HighScore> highScores = new ArrayList<>();
+    private boolean hasStarted = false; // Flag to indicate wait
+    private boolean isGameOver = false; // Flag to indicate gamestate
+    private boolean musicOn = true;
+    private boolean soundOn = true;
     // Constructor to initialize the game
     public TetrisGame() {
         // Set layout and initialize board and game settings
@@ -185,12 +189,11 @@ public class TetrisGame extends JPanel implements ActionListener {
         setLayout(null); // No layout manager needed for the game area
 
         // Set the preferred size for the game area (this is important for display)
-        setPreferredSize(new Dimension(300, 600));
+        setPreferredSize(new Dimension(500, 750));
 
         // Initialize the game by spawning a Tetromino and starting the timer
         spawnNewTetrimino();
         timer = new Timer(500, this);
-        timer.start();
 
         // Enable key input handling for controlling the Tetromino
         setFocusable(true);
@@ -253,19 +256,32 @@ public class TetrisGame extends JPanel implements ActionListener {
     }
 
     // Bind key inputs using InputMap and ActionMap
+    // Bind key inputs using InputMap and ActionMap
     private void bindKeyInputs() {
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
+
+        // Start the game only on spacebar press
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "startGame");
+        actionMap.put("startGame", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!hasStarted) {
+                    timer.start();  // Start the game timer on spacebar press
+                    hasStarted = true;  // Mark that the game has started
+                }
+            }
+        });
 
         // Left arrow key -> move left
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
         actionMap.put("moveLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (board.canPlaceTetrimino(currentTetromino, currentX - 1, currentY)) {
+                if (hasStarted && board.canPlaceTetrimino(currentTetromino, currentX - 1, currentY)) {
                     currentX--;
                     repaint();
-                    //Play sound effect
+                    // Play sound effect
                     soundEffect = new SoundEffects();
                     soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
                     soundEffect.setVolume(0.25f);  // Set volume to 50%
@@ -278,10 +294,10 @@ public class TetrisGame extends JPanel implements ActionListener {
         actionMap.put("moveRight", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (board.canPlaceTetrimino(currentTetromino, currentX + 1, currentY)) {
+                if (hasStarted && board.canPlaceTetrimino(currentTetromino, currentX + 1, currentY)) {
                     currentX++;
                     repaint();
-                    //Play sound effect
+                    // Play sound effect
                     soundEffect = new SoundEffects();
                     soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
                     soundEffect.setVolume(0.25f);  // Set volume to 50%
@@ -294,10 +310,10 @@ public class TetrisGame extends JPanel implements ActionListener {
         actionMap.put("moveDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (board.canPlaceTetrimino(currentTetromino, currentX, currentY + 1)) {
+                if (hasStarted && board.canPlaceTetrimino(currentTetromino, currentX, currentY + 1)) {
                     currentY++;
                     repaint();
-                    //Play sound effect
+                    // Play sound effect
                     soundEffect = new SoundEffects();
                     soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
                     soundEffect.setVolume(0.25f);  // Set volume to 50%
@@ -305,24 +321,26 @@ public class TetrisGame extends JPanel implements ActionListener {
             }
         });
 
-        // Up arrow key -> rotate tetromino
+        // Up arrow key -> rotate Tetromino
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "rotate");
         actionMap.put("rotate", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentTetromino.rotate();
-                //Play sound effect
-                soundEffect = new SoundEffects();
-                soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
-                soundEffect.setVolume(0.25f);  // Set volume to 50%
+                if (hasStarted) {
+                    currentTetromino.rotate();
+                    // Play sound effect
+                    soundEffect = new SoundEffects();
+                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+                    soundEffect.setVolume(0.25f);  // Set volume to 50%
 
-                if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
-                    // Undo rotation if placement fails
-                    currentTetromino.rotate();
-                    currentTetromino.rotate();
-                    currentTetromino.rotate();
+                    if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
+                        // Undo rotation if placement fails
+                        currentTetromino.rotate();
+                        currentTetromino.rotate();
+                        currentTetromino.rotate();
+                    }
+                    repaint();
                 }
-                repaint();
             }
         });
 
@@ -334,6 +352,7 @@ public class TetrisGame extends JPanel implements ActionListener {
                 togglePause();
             }
         });
+
         // M key -> Pause/Unpause the game
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), "music");
         actionMap.put("music", new AbstractAction() {
@@ -342,6 +361,7 @@ public class TetrisGame extends JPanel implements ActionListener {
                 toggleMusic();
             }
         });
+
         // S key -> Pause/Unpause the game
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sound");
         actionMap.put("sound", new AbstractAction() {
@@ -350,7 +370,19 @@ public class TetrisGame extends JPanel implements ActionListener {
                 toggleSound();
             }
         });
+
+        // B key -> Reset the game if it is over
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_B, 0), "resetGame");
+        actionMap.put("resetGame", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isGameOver) {  // Check if the game is over
+                    resetGame();   // Call the resetGame() method
+                }
+            }
+        });
     }
+
 
     // Spawns a new Tetromino at the top of the board
     private void spawnNewTetrimino() {
@@ -380,8 +412,10 @@ public class TetrisGame extends JPanel implements ActionListener {
         isMusicPaused = !isMusicPaused;
         if (isMusicPaused) {
             sounds.BackgroundMusic.pauseMusic();
+            musicOn = false;
         } else {
             sounds.BackgroundMusic.resumeMusic();
+            musicOn = true;
         }
     }
     // Toggle Sound Effects
@@ -389,8 +423,10 @@ public class TetrisGame extends JPanel implements ActionListener {
         isSoundPaused = !isSoundPaused;
         if (isSoundPaused) {
             sounds.SoundEffects.pauseSound();
+            soundOn = false;
         } else {
             sounds.SoundEffects.resumeSound();
+            soundOn = true;
         }
 
         // STILL WORKING ON IT
@@ -474,10 +510,36 @@ public class TetrisGame extends JPanel implements ActionListener {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Lines Cleared " + linesRemoved, 350, 80);
+        // Music Toggle
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Music Toggle " + musicOn, 350, 100);
+
+        // Sound Toggle
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.drawString("Sound Toggle " + soundOn, 350, 120);
+
+        // Controls 1
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 15));
+        g.drawString("Left arrow = Left, Right arrow = Right,  Up arrow = Turn " , 350, 140);
+        // Controls 2
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 15));
+        g.drawString("Down arrow = Drop, P = Pause, Spacebar = Start" , 350, 160);
+        // Control 3
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 15));
+        g.drawString("M = Toggle Music, S = Toggle Sound, B = Restart (After Game Over)" , 350, 180);
+
+
+
     }
     // Update and save the high scores after game over
     private void gameOver() {
         timer.stop();
+        isGameOver = true; // ste game over true
         // Play sound Effect
         soundEffect = new SoundEffects();
         soundEffect.playEffect("assets/game-finish.wav");  // Provide the correct file path
@@ -487,6 +549,17 @@ public class TetrisGame extends JPanel implements ActionListener {
         if (playerName != null && !playerName.isEmpty()) {
             updateHighScores(playerName, score);  // Only update with player name and score
         }
+    }
+    public void resetGame() {
+        isGameOver = false;  // Reset the game over flag
+        score = 0;           // Reset score
+        linesRemoved = 0;     // Reset lines removed
+        difficulty = 1;       // Reset difficulty
+        board = new Board();  // Clear the board
+        spawnNewTetrimino();  // Start with a new Tetromino
+        timer.setDelay(500);  // Reset game speed to default
+        hasStarted = false;   // Reset the start flag
+        repaint();            // Repaint the game screen
     }
 
     // Method to update the high score list

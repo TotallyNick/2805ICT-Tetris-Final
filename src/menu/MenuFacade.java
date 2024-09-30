@@ -14,7 +14,7 @@ public class MenuFacade {
         // Initialize JFrame
         mainFrame = new JFrame("Tetris Menu");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(550, 800);
+        mainFrame.setSize(900, 950);
         mainFrame.setLayout(new CardLayout());
 
         // Initialize Panels

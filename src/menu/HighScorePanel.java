@@ -1,14 +1,14 @@
 package menu;
 
 import javax.swing.*;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ConfigMenuPanel extends JPanel {
+public class HighScorePanel extends JPanel {
     private MenuFacade menuFacade;
 
-    public ConfigMenuPanel(MenuFacade menuFacade) {
+    public HighScorePanel(MenuFacade menuFacade) {
         this.menuFacade = menuFacade;
 
         // Set Layout for vertical alignment
@@ -17,21 +17,13 @@ public class ConfigMenuPanel extends JPanel {
         // Add vertical glue before the content to push it down
         add(Box.createVerticalGlue());
 
-        // Title Label for Configuration
-        JLabel configLabel = new JLabel("Configuration");
-        configLabel.setAlignmentX(CENTER_ALIGNMENT); // Center horizontally
-        configLabel.setFont(new Font(configLabel.getFont().getName(), Font.BOLD, 16)); // Set title size to 16
-        add(configLabel);
+        // Title Label for High Scores
+        JLabel highScoreLabel = new JLabel("High Scores");
+        highScoreLabel.setAlignmentX(CENTER_ALIGNMENT); // Center horizontally
+        highScoreLabel.setFont(new Font(highScoreLabel.getFont().getName(), Font.BOLD, 16)); // Set title size to 16
+        add(highScoreLabel);
 
         // Add space after title
-        add(Box.createVerticalStrut(20));
-
-        // Example Configuration Option (Placeholder)
-        JLabel volumeLabel = new JLabel("Volume: (More settings coming)");
-        volumeLabel.setAlignmentX(CENTER_ALIGNMENT); // Center horizontally
-        add(volumeLabel);
-
-        // Add space after volume label
         add(Box.createVerticalStrut(20));
 
         // Back Button to return to Main Menu

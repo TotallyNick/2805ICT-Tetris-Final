@@ -104,7 +104,7 @@ public class TetrisGame extends JPanel implements ActionListener {
         super.addNotify();
         requestFocusInWindow();  // Ensure the component gains focus when shown
     }
-    // Apply loaded configurations to the game settings
+    // Apply loaded configurations to the game settings TBC
     private void applyConfigurations() {
         if (config != null) {
             // Adjust game settings based on the loaded config
@@ -113,7 +113,6 @@ public class TetrisGame extends JPanel implements ActionListener {
             soundOn = config.isSoundEffectOn();  // Set sound effect toggle state
         }
     }
-    // Bind key inputs using InputMap and ActionMap
     // Bind key inputs using InputMap and ActionMap
     private void bindKeyInputs() {
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -137,12 +136,7 @@ public class TetrisGame extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (hasStarted && board.canPlaceTetrimino(currentTetromino, currentX - 1, currentY)) {
-                    currentX--;
-                    repaint();
-                    // Play sound effect
-                    soundEffect = new SoundEffects();
-                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
-                    soundEffect.setVolume(0.25f);  // Set volume to 50%
+                    moveLeft();
                 }
             }
         });
@@ -153,12 +147,7 @@ public class TetrisGame extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (hasStarted && board.canPlaceTetrimino(currentTetromino, currentX + 1, currentY)) {
-                    currentX++;
-                    repaint();
-                    // Play sound effect
-                    soundEffect = new SoundEffects();
-                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
-                    soundEffect.setVolume(0.25f);  // Set volume to 50%
+                    moveRight();
                 }
             }
         });
@@ -169,12 +158,7 @@ public class TetrisGame extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (hasStarted && board.canPlaceTetrimino(currentTetromino, currentX, currentY + 1)) {
-                    currentY++;
-                    repaint();
-                    // Play sound effect
-                    soundEffect = new SoundEffects();
-                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
-                    soundEffect.setVolume(0.25f);  // Set volume to 50%
+                    moveDown();
                 }
             }
         });
@@ -185,19 +169,7 @@ public class TetrisGame extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (hasStarted) {
-                    currentTetromino.rotate();
-                    // Play sound effect
-                    soundEffect = new SoundEffects();
-                    soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
-                    soundEffect.setVolume(0.25f);  // Set volume to 50%
-
-                    if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
-                        // Undo rotation if placement fails
-                        currentTetromino.rotate();
-                        currentTetromino.rotate();
-                        currentTetromino.rotate();
-                    }
-                    repaint();
+                    moveRotate();
                 }
             }
         });
@@ -241,6 +213,48 @@ public class TetrisGame extends JPanel implements ActionListener {
         });
     }
 
+    public void moveLeft(){
+        currentX--;
+        repaint();
+        // Play sound effect
+        soundEffect = new SoundEffects();
+        soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+        soundEffect.setVolume(0.25f);  // Set volume to 50%
+    }
+
+    public void moveRight(){
+        currentX++;
+        repaint();
+        // Play sound effect
+        soundEffect = new SoundEffects();
+        soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+        soundEffect.setVolume(0.25f);  // Set volume to 50%
+    }
+
+    public void moveDown(){
+        currentY++;
+        repaint();
+        // Play sound effect
+        soundEffect = new SoundEffects();
+        soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+        soundEffect.setVolume(0.25f);  // Set volume to 50%
+    }
+
+    public void moveRotate(){
+        currentTetromino.rotate();
+        // Play sound effect
+        soundEffect = new SoundEffects();
+        soundEffect.playEffect("assets/move-turn.wav");  // Provide the correct file path
+        soundEffect.setVolume(0.25f);  // Set volume to 50%
+
+        if (!board.canPlaceTetrimino(currentTetromino, currentX, currentY)) {
+            // Undo rotation if placement fails
+            currentTetromino.rotate();
+            currentTetromino.rotate();
+            currentTetromino.rotate();
+        }
+        repaint();
+    }
 
     // Spawns a new Tetromino at the top of the board
     private void spawnNewTetrimino() {

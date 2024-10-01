@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4079cc89-96c1-4e7c-acdd-98cd3cecb507" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/game/TetrisGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/TetrisGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/game_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/highscores.json" beforeDir="false" afterPath="$PROJECT_DIR$/highscores.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
